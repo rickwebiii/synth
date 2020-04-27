@@ -1,0 +1,7 @@
+*.swp
+bazel-bin
+bazel-blinkenlights
+bazel-out
+bazel-testlogs
+vivado*.log
+vivado*.jou
