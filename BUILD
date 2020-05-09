@@ -1,12 +1,22 @@
 load(
   "@fpga_rules//vivado:rules.bzl",
-  "fpga_bitstream"
+  "fpga_bitstream",
+  "run_tcl_template"
 )
 load(
   "@fpga_rules//clash:rules.bzl",
   "clash_to_vhdl"
 )
 
+run_tcl_template(
+  name = "clockgen",
+  build_template = "clockGen.tcl",
+  outs = [
+    "clocks/clocks.v",
+    "clocks/clocks_clk_wiz.v",
+    "clocks/clocks.xci"
+  ]
+)
 
 fpga_bitstream(
   name = "synth",
