@@ -12,9 +12,9 @@ run_tcl_template(
   name = "clockgen",
   build_template = "clockGen.tcl",
   outs = [
-    "clocks/clocks.v",
-    "clocks/clocks_clk_wiz.v",
-    "clocks/clocks.xci"
+    "ip/clocks/clocks.v",
+    "ip/clocks/clocks_clk_wiz.v",
+    "ip/clocks/clocks.xci"
   ]
 )
 

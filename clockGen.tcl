@@ -1,6 +1,8 @@
 create_project -in_memory
 
-create_ip -name clk_wiz -vendor xilinx.com -library ip -version 6.0 -module_name clocks -dir {BASE_DIR}
+file mkdir {BASE_DIR}/ip
+
+create_ip -force -name clk_wiz -vendor xilinx.com -library ip -version 6.0 -module_name clocks -dir {BASE_DIR}/ip
 set_property -dict [list\
   CONFIG.CLK_IN1_BOARD_INTERFACE {sys_clock}\
   CONFIG.CLKOUT2_USED {true}\
@@ -20,10 +22,10 @@ set_property -dict [list\
   CONFIG.CLKOUT2_PHASE_ERROR {293.530}\
 ] [get_ips clocks]
 
-generate_target {instantiation_template} [get_ips clocks]
+#generate_target {instantiation_template} [get_ips clocks]
 
-generate_target all [get_ips clocks]
+generate_target -force all [get_ips clocks]
+
+#synth_ip -force [get_ips clocks]
 
 export_ip_user_files -of_objects [get_ips clocks] -no_script -sync -force -quiet
-synth_ip [get_ips clocks]
-
