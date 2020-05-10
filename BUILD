@@ -22,20 +22,14 @@ fpga_bitstream(
   name = "synth",
   srcs = [
     ":synth_clash",
-    "Dom12288.xci",
-    "Dom12288.v",
-    "Dom12288_clk_wiz.v",
-    "DOM100M.xci",
-    "DOM100M.v",
-    "DOM100M_clk_wiz.v"
+    ":clockgen",
+    "synthWrapper.vhd"
   ],
   part = "xc7z020clg400-1",
   constraints = [
     "const.xdc",
-    "DOM100M.xdc",
-    "Dom12288.xdc"
   ],
-  topEntity = "topEntity",
+  topEntity = "synthWrapper",
   optimize = False
 )
 

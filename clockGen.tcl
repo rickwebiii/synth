@@ -2,6 +2,8 @@ create_project -in_memory
 
 file mkdir {BASE_DIR}/ip
 
+set_part xc7z020clg400-1
+
 create_ip -force -name clk_wiz -vendor xilinx.com -library ip -version 6.0 -module_name clocks -dir {BASE_DIR}/ip
 set_property -dict [list\
   CONFIG.CLK_IN1_BOARD_INTERFACE {sys_clock}\
@@ -26,6 +28,6 @@ set_property -dict [list\
 
 generate_target -force all [get_ips clocks]
 
-#synth_ip -force [get_ips clocks]
+synth_ip -force [get_ips clocks]
 
 export_ip_user_files -of_objects [get_ips clocks] -no_script -sync -force -quiet

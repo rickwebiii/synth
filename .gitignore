@@ -1,6 +1,6 @@
 *.swp
 bazel-bin
-bazel-blinkenlights
+bazel-synth
 bazel-out
 bazel-testlogs
 vivado*.log

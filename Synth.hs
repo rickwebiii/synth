@@ -6,26 +6,25 @@ import Clash.Explicit.Signal
 
 --import WaveGen
 import Counter
+import Clash.Prelude
 import Clash.Xilinx.ClockGen
 
 createDomain vSystem{vName="Clk12288k", vPeriod=81380}
 createDomain vSystem{vName="Clk100M", vPeriod=10000}
 
 topEntity
-  :: Clock System
-  -> Reset System
-  -> Enable System
---  -> (Signal Clk100M (BitVector 2), Signal Clk12288k (BitVector 2))
-  -> (Signal Clk12288k (BitVector 2), Signal Clk12288k (BitVector 2))
-topEntity clk rst en = (out12288k, out12288k)
+  :: Clock Clk100M
+  -> Clock Clk12288k
+  -> Reset Clk100M
+  -> Enable Clk100M
+  -> Enable Clk12288k
+  -> (Signal Clk100M (BitVector 2), Signal Clk12288k (BitVector 2))
+topEntity clk100M clk12288k rst100M en100M en12288k = (slice d24 d23 <$> out100M, slice d24 d23 <$> out12288k)
   where
-    (clk12288k, en12288k) = clockWizard @System @Clk12288k (SSymbol @"Dom12288") clk rst
-    --(clk100M, en100M)     = clockWizard @System @Clk100M (SSymbol @"DOM100M") clk rst
-    cntr                  = exposeClockResetEnable $ upCounter (pure False) (pure True)
-    --out100M               = cntr clk100M rst100M en100M
-    out12288k             = cntr clk12288k rst12288k en12288k
-    rst12288k             = convertReset clk clk12288k rst
-    --rst100M               = convertReset clk clk100M rst
+    cntr      = exposeClockResetEnable $ upCounter (pure False) (pure True)
+    out100M   = (cntr clk100M rst100M en100M) :: Signal Clk100M (Unsigned 32)
+    out12288k = cntr clk12288k rst12288k en12288k :: Signal Clk12288k (Unsigned 32)
+    rst12288k = convertReset clk100M clk12288k rst100M
 
 --channel
 --  :: HiddenClockResetEnable dom
